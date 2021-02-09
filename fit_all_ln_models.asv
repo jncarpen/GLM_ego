@@ -11,7 +11,7 @@ n_pos_bins = 20;
 n_dir_bins = 18;
 n_ego_bins = 18;
 n_speed_bins = 10;
-n_dist_bins = 24; % approximatley 5 cm bins
+n_dist_bins = 24; 
 
 % compute position matrix
 [posgrid, posVec] = pos_map([posx_c posy_c], n_pos_bins, boxSize);

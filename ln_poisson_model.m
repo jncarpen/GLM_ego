@@ -41,7 +41,7 @@ if ~isempty(param_spd)
     [J_spd,J_spd_g,J_spd_h] = rough_penalty_1d(param_spd,b_spd);
 end
 
-if ~isempty(param_theta)
+if ~isempty(param_ego)
     [J_ego,J_ego_g,J_ego_h] = rough_penalty_1d_circ(param_ego,b_ego);
 end
 

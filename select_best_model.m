@@ -26,37 +26,37 @@ singleModels = 12:15;
 [~,top1] = max(nanmean(LLH_values(:,singleModels))); top1 = top1 + singleModels(1)-1;
 
 % find the best double model that includes the single model
-if top1 == 12 % P -> PH, PS, PT
+if top1 == 12 % P -> PH, PS, PE
     [~,top2] = max(nanmean(LLH_values(:,[6 7 8])));
     vec = [6 7 8]; top2 = vec(top2);
-elseif top1 == 13 % H -> PH, HS, HT
+elseif top1 == 13 % H -> PH, HS, HE
     [~,top2] = max(nanmean(LLH_values(:,[6 9 10])));
     vec = [6 9 10]; top2 = vec(top2);
-elseif top1 == 14 % S -> PS, HS, ST
+elseif top1 == 14 % S -> PS, HS, SE
     [~,top2] = max(nanmean(LLH_values(:,[7 9 11])));
     vec = [7 9 11]; top2 = vec(top2);
-else % T -> PT, HT, ST
+else % E -> PE, HE, SE
     [~,top2] = max(nanmean(LLH_values(:,[8 10 11])));
     vec = [8 10 11]; top2 = vec(top2);
 end
 
 % find the best triple model that includes the double model
-if top2 == 6 % PH-> PHS, PHT
+if top2 == 6 % PH-> PHS, PHE
     [~,top3] = max(nanmean(LLH_values(:,[2 3])));
     vec = [2 3]; top3 = vec(top3);
-elseif top2 == 7 % PS -> PHS, PST
+elseif top2 == 7 % PS -> PHS, PSE
     [~,top3] = max(nanmean(LLH_values(:,[2 4])));
     vec = [2 4]; top3 = vec(top3);
-elseif top2 == 8 % PT -> PHT, PST
+elseif top2 == 8 % PE -> PHE, PSE
     [~,top3] = max(nanmean(LLH_values(:,[3 4])));
     vec = [3 4]; top3 = vec(top3);
-elseif top2 == 9 % HS -> PHS, HST
+elseif top2 == 9 % HS -> PHS, HSE
     [~,top3] = max(nanmean(LLH_values(:,[2 5])));
     vec = [2 5]; top3 = vec(top3);
-elseif top2 == 10 % HT -> PHT, HST
+elseif top2 == 10 % HE -> PHE, HSE
     [~,top3] = max(nanmean(LLH_values(:,[3 5])));
     vec = [3 5]; top3 = vec(top3);
-elseif top2 == 11 % ST -> PST, HST
+elseif top2 == 11 % SE -> PSE, HSE
     [~,top3] = max(nanmean(LLH_values(:,[4 5])));
     vec = [4 5]; top3 = vec(top3);
 end
@@ -84,9 +84,9 @@ else
     selected_model = top1; %single model
 end
 
-% re-set if selected model is not above baseline
-pval_baseline = signrank(LLH_values(:,selected_model),[],'tail','right');
-
-if pval_baseline > 0.05
-    selected_model = NaN;
-end
+% % re-set if selected model is not above baseline
+% pval_baseline = signrank(LLH_values(:,selected_model),[],'tail','right');
+% 
+% if pval_baseline > 0.05
+%     selected_model = NaN;
+% end

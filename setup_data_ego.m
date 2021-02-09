@@ -1,5 +1,4 @@
-%% Description of run_me
-
+%% SET UP DATA: EGOCENTRIC GLM
 % This script is segmented into several parts. First, the data (an
 % example cell) is loaded. Then, 15 LN models are fit to the
 % cell's spike train. Each model uses information about 
@@ -13,20 +12,7 @@
 % these - along with the model-derived response profiles and the model
 % performance and results of the selection procedure are plotted.
 
-% Code as implemented in Hardcastle, Maheswaranthan, Ganguli, Giocomo,
-% Neuron 2017
-% V1: Kiah Hardcastle, March 16, 2017
-
-
-%% Clear the workspace and load the data
-
-% clear all; close all; clc
-
-% load the data
-% fprintf('(1/5) Loading data from example cell \n')
-% load data_for_cell77
-
-% description of variables included:
+% description of variables included --
 % boxSize = length (in cm) of one side of the square box
 % post = vector of time (seconds) at every 20 ms time bin
 % spiketrain = vector of the # of spikes in each 20 ms time bin
@@ -36,9 +22,45 @@
 % posy = y-position of left LED every 20 ms
 % posy2 = y-posiiton of right LED every 20 ms
 % posy_c = y-position in middle of LEDs
-% filt_eeg = local field potential, filtered for theta frequency (4-12 Hz)
-% eeg_sample_rate = sample rate of filt_eeg (250 Hz)
-% sampleRate = sampling rate of neural data and behavioral variable (50Hz)
+% ref = reference point for egocentric bearing calculations; 
+% formatted as [x y].
+
+% Modified from code implemented in Hardcastle, Maheswaranthan, Ganguli, Giocomo,
+% Neuron 2017; V1: Kiah Hardcastle, March 16, 2017
+% Current V: Jordan Carpenter, February 8, 2021.
+
+
+%% load data and format variables
+warning('off', 'all');
+clear all; close all; clc
+
+% load dataset from animal 24116
+fprintf('(1/5) Loading data...')
+load('C:\Users\17145\Documents\github_local\GLM\GLM_sample_data');
+
+% format variables:
+% (1)  x-position of left LED every 20 ms (t x 1):
+posx = P(:,2);
+% (2)  y-position of left LED every 20 ms (t x 1):
+posy = P(:,3);
+% (3)  x-position of right LED every 20 ms (t x 1):
+posx2 = P(:,4);
+% (4)  y-position of right LED every 20 ms (t x 1):
+posy2 = P(:,5);
+% (5)  x-position in middle of LEDs
+posx_c = (posx + posx2)./2;
+% (6)  y-position in middle of LEDs
+posy_c = (posy + posy2)./2;
+% (7) vector of time (seconds) at every 20 ms time bin
+post = P(:,1);
+% (8) spiketrain: vector of the # of spikes in each 20 ms time bin
+ST = ST(ST < post(end) & ST > post(1));
+spiketrain = histcounts(ST, linspace(post(1),post(end),numel(post)+1))';
+% (9) boxSize: length (in cm) of one side of the square box
+boxSize = nanmean([nanmax(posx_c) nanmax(posy_c)]);
+% (10) ref: reference point for bearing calculations (added by me)
+ref = [75, 75];
+
 
 %% fit the model
 fprintf('(2/5) Fitting all linear-nonlinear (LN) models\n')
@@ -55,3 +77,22 @@ compute_all_tuning_curves
 %% plot the results
 fprintf('(5/5) Plotting performance and parameters\n') 
 plot_performance_and_parameters
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
