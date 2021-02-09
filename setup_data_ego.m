@@ -36,7 +36,7 @@ clear all; close all; clc
 
 % load dataset from animal 24116
 fprintf('(1/5) Loading data...')
-load('C:\Users\17145\Documents\github_local\GLM\GLM_sample_data');
+load('C:\Users\17145\Documents\github_local\GLM\GLM_sample_data\egocell.mat');
 
 % format variables:
 % (1)  x-position of left LED every 20 ms (t x 1):

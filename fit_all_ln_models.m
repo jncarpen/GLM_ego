@@ -26,13 +26,15 @@ n_dist_bins = 24; % approximatley 5 cm bins
 [egogrid,dirVec,ego] = ego_map(posx,posx2,posy,posy2,ref,n_ego_bins);
 
 % compute distance matrix
-
+[distgrid,distVec,dist] = dist_map(posx_c,posy_c,ref,n_dist_bins);
 
 % remove times when the animal ran > 50 cm/s (these data points may contain artifacts)
 too_fast = find(speed >= 50);
 posgrid(too_fast,:) = []; hdgrid(too_fast,:) = []; 
 speedgrid(too_fast,:) = []; egogrid(too_fast,:) = [];
+distgrid(too_fast,:) = [];
 spiketrain(too_fast) = [];
+
 
 
 %% Fit all 15 LN models
