@@ -38,32 +38,52 @@ spiketrain(too_fast) = [];
 
 
 %% Fit all 15 LN models
-numModels = 15;
+% compute number of models needed
+numModels = 31;
 testFit = cell(numModels,1);
 trainFit = cell(numModels,1);
 param = cell(numModels,1);
 A = cell(numModels,1);
 modelType = cell(numModels,1);
 
-% ALL VARIABLES
-A{1} = [ posgrid hdgrid speedgrid egogrid]; modelType{1} = [1 1 1 1];
-% THREE VARIABLES
-A{2} = [ posgrid hdgrid speedgrid ]; modelType{2} = [1 1 1 0];
-A{3} = [ posgrid hdgrid  egogrid]; modelType{3} = [1 1 0 1];
-A{4} = [ posgrid  speedgrid egogrid]; modelType{4} = [1 0 1 1];
-A{5} = [  hdgrid speedgrid egogrid]; modelType{5} = [0 1 1 1];
-% TWO VARIABLES
-A{6} = [ posgrid hdgrid]; modelType{6} = [1 1 0 0];
-A{7} = [ posgrid  speedgrid ]; modelType{7} = [1 0 1 0];
-A{8} = [ posgrid   egogrid]; modelType{8} = [1 0 0 1];
-A{9} = [  hdgrid speedgrid ]; modelType{9} = [0 1 1 0];
-A{10} = [  hdgrid  egogrid]; modelType{10} = [0 1 0 1];
-A{11} = [  speedgrid egogrid]; modelType{11} = [0 0 1 1];
-% ONE VARIABLE
-A{12} = posgrid; modelType{12} = [1 0 0 0];
-A{13} = hdgrid; modelType{13} = [0 1 0 0];
-A{14} = speedgrid; modelType{14} = [0 0 1 0];
-A{15} = egogrid; modelType{15} = [0 0 0 1];
+% nchoosek(['P' 'H' 'S' 'E' 'D'], 3)
+
+% ALL VARIABLES (1) 
+A{1} = [ posgrid hdgrid speedgrid egogrid distgrid]; modelType{1} = [1 1 1 1 1];
+% FOUR VARIABLES (5)
+A{2} = [posgrid hdgrid speedgrid egogrid]; modelType{2} = [1 1 1 1 0];
+A{3} = [posgrid hdgrid speedgrid distgrid]; modelType{3} = [1 1 1 0 1];
+A{4} = [posgrid hdgrid egogrid distgrid]; modelType{4} = [1 1 0 1 1];
+A{5} = [posgrid speedgrid egogrid distgrid]; modelType{5} = [1 0 1 1 1];
+A{6} = [hdgrid speedgrid egogrid distgrid]; modelType{6} = [0 1 1 1 1];
+% THREE VARIABLES (10)
+A{7} = [posgrid hdgrid speedgrid]; modelType{7} = [1 1 1 0 0];
+A{8} = [posgrid hdgrid egogrid]; modelType{8} = [1 1 0 1 0];
+A{9} = [posgrid hdgrid distgrid]; modelType{9} = [1 1 0 0 1];
+A{10} = [posgrid speedgrid egogrid]; modelType{10} = [1 0 1 1 0];
+A{11} = [posgrid speedgrid distgrid]; modelType{11} = [1 0 1 0 1];
+A{12} = [posgrid egogrid distgrid]; modelType{12} = [1 0 0 1 1];
+A{13} = [hdgrid speedgrid egogrid]; modelType{13} = [0 1 1 1 0];
+A{14} = [hdgrid speedgrid distgrid]; modelType{14} = [0 1 1 0 1];
+A{15} = [hdgrid egogrid distgrid]; modelType{15} = [0 1 0 1 1];
+A{16} = [speedgrid egogrid distgrid]; modelType{16} = [0 0 1 1 1];
+% TWO VARIABLES (10)
+A{17} = [posgrid hdgrid]; modelType{17} = [1 1 0 0 0];
+A{18} = [posgrid speedgrid]; modelType{18} = [1 0 1 0 0];
+A{19} = [posgrid egogrid]; modelType{19} = [1 0 0 1 0];
+A{20} = [posgrid distgrid]; modelType{20} = [1 0 0 0 1];
+A{21} = [hdgrid speedgrid]; modelType{21} = [0 1 1 0 0];
+A{22} = [hdgrid egogrid]; modelType{22} = [0 1 0 1 0];
+A{23} = [hdgrid distgrid]; modelType{23} = [0 1 0 0 1];
+A{24} = [speedgrid egogrid]; modelType{24} = [0 0 1 0 1];
+A{25} = [speedgrid distgrid]; modelType{25} = [0 0 1 0 1];
+A{26} = [egogrid distgrid]; modelType{25} = [0 0 0 1 1];
+% ONE VARIABLE (5) 
+A{27} = [posgrid]; modelType{27} = [1 0 0 0 0];
+A{28} = [hdgrid]; modelType{28} = [0 1 0 0 0];
+A{29} = [speedgrid]; modelType{29} = [0 0 1 0 0];
+A{30} = [egogrid]; modelType{30} = [0 0 0 1 0];
+ A{31} = [distgrid]; modelType{31} = [0 0 0 0 1];
 
 % compute a filter, which will be used to smooth the firing rate
 filter = gaussmf(-4:4,[2 0]); filter = filter/sum(filter); 
