@@ -47,15 +47,11 @@ if ~isempty(param_ego)
     [J_ego,J_ego_g,J_ego_h] = rough_penalty_1d_circ(param_ego,b_ego);
 end
 
-if ~isempty(param_dist)
-    [J_dist,J_dist_g,J_dist_h] = rough_penalty_1d_circ(param_dist,b_dist);
-end
-
 %% compute f, the gradient, and the hessian 
 
-f = sum(rate-Y.*u) + J_pos + J_hd + J_spd + J_ego + J_dist;
-df = real(X' * (rate - Y) + [J_pos_g; J_hd_g; J_spd_g; J_ego_g; J_dist_g]);
-hessian = hessian_glm + blkdiag(J_pos_h,J_hd_h,J_spd_h,J_ego_h,J_dist_h);
+f = sum(rate-Y.*u) + J_pos + J_hd + J_spd + J_ego;
+df = real(X' * (rate - Y) + [J_pos_g; J_hd_g; J_spd_g; J_ego_g]);
+hessian = hessian_glm + blkdiag(J_pos_h,J_hd_h,J_spd_h,J_ego_h);
 
 
 %% smoothing functions called in the above script
@@ -205,21 +201,19 @@ elseif all(modelType == [1 0 1 1 1])
     param_spd = param(numPos+1:numPos+numSpd);
     param_ego = param(numPos+numSpd+1:numPos+numSpd+numEgo);
     param_dist = param(numPos+numSpd+numEgo+1:numPos+numSpd+numEgo+numDist);
-elseif all(modelType == [0 1 1 1 1])
-    param_hd = param(1:numHD);
-    param_spd = param(numHD+1:numHD+numSpd);
-    param_ego = param(numHD+numSpd+1:numHD+numSpd+numEgo);
-    param_dist = param(numHD+numSpd+numEgo+1:numHD+numSpd+numEgo+numDist);
+elseif
+    
+    
+    
+    
+    
     
 % full model (x1)
-elseif all(modelType == [1 1 1 1 1])
+elseif all(modelType == [1 1 1 1])
     param_pos = param(1:numPos);
     param_hd = param(numPos+1:numPos+numHD);
     param_spd = param(numPos+numHD+1:numPos+numHD+numSpd);
     param_ego = param(numPos+numHD+numSpd+1:numPos+numHD+numSpd+numEgo);
-    param_dist = param(numPos+numHD+numSpd+numEgo+1:...
-        numPos+numHD+numSpd+numEgo+numDist);
-end
 end
     
 
