@@ -1,0 +1,92 @@
+% description of variables included:
+% boxSize = length (in cm) of one side of the square box
+% post = vector of time (seconds) at every 20 ms time bin
+% spiketrain = vector of the # of spikes in each 20 ms time bin
+% posx = x-position of left LED every 20 ms
+% posx2 = x-position of right LED every 20 ms
+% posx_c = x-position in middle of LEDs
+% posy = y-position of left LED every 20 ms
+% posy2 = y-posiiton of right LED every 20 ms
+% posy_c = y-position in middle of LEDs
+% filt_eeg = local field potential, filtered for theta frequency (4-12 Hz)
+% eeg_sample_rate = sample rate of filt_eeg (250 Hz)
+% sampleRate = sampling rate of neural data and behavioral variable (50Hz)
+
+%% GRAB OUR DATA
+warning('off', 'all');
+clear all; close all; clc
+fprintf('(1/5) Loading data from animal 24116...')
+
+% load dataset from animal 24116
+data = load('Z:\jordannc\GLM\dtest.mat');
+data = data.dtest;
+% data = load('D:\Data\Dataset\dManCopyDataV1\JZ.mat');
+
+rawEEGvoltage = data.rawEEG{1,1}(:,1);
+rawEEGtime = data.rawEEG{1,1}(:,2);
+P = data.P;
+ST = data.ST;
+
+% % choose a session
+% sess = 32;
+% unit = 2;
+% chan = 2; % lfp channel
+% 
+% % pull out variables that we need
+% rawEEGvoltage = data.rawEEG{1,sess}{1,chan}(:,1);
+% rawEEGtime = data.rawEEG{1,sess}{1,chan}(:,2);
+% P = data.pos_cm{1,sess};
+% ST = data.SpikeTimes{1,sess}{1,unit};
+
+% length(ST)
+% pathPlot_hd(P, ST, get_hd(P))
+
+%% FORMAT VARIABLES
+% (1)  x-position of left LED every 20 ms (t x 1):
+posx = P(:,2);
+% (2)  y-position of left LED every 20 ms (t x 1):
+posy = P(:,3);
+% (3)  x-position of right LED every 20 ms (t x 1):
+posx2 = P(:,4);
+% (4)  y-position of right LED every 20 ms (t x 1):
+posy2 = P(:,5);
+% (5)  x-position in middle of LEDs
+posx_c = (posx + posx2)./2;
+% (6)  y-position in middle of LEDs
+posy_c = (posy + posy2)./2;
+% (7) vector of time (seconds) at every 20 ms time bin
+post = P(:,1);
+% (8) spiketrain: vector of the # of spikes in each 20 ms time bin
+ST = ST(ST < post(end) & ST > post(1));
+spiketrain = histcounts(ST, linspace(post(1),post(end),numel(post)+1))';
+% (9) boxSize: length (in cm) of one side of the square box
+boxSize = nanmean([nanmax(posx_c) nanmax(posy_c)]);
+% (10) eeg_sample_rate: sample rate of filt_eeg (250 Hz)
+eeg_sample_rate = round(1/mode(diff(rawEEGtime)));
+% (11) filt_eeg: local field potential, filtered for theta frequency (4-12 Hz)
+order = 3; fcutlow = 4; fcuthigh = 12; nyquistLim = eeg_sample_rate/2;
+[b,a]=butter(order,[fcutlow,fcuthigh]/nyquistLim,'bandpass');
+filt_eeg = filter(b,a,rawEEGvoltage);
+% (12) sampleRate: sampling rate of neural data and behavioral variable (50Hz)
+sampleRate = 1/mode(diff(post));
+% (13) ref: reference point for bearing calculations (added by me)
+ref = [75, 75];
+
+run_me
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
