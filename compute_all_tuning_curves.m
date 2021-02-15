@@ -8,9 +8,12 @@ posx_c(too_fast) = []; posy_c(too_fast) = [];
 direction(too_fast) = [];
 speed(too_fast) = [];
 ego(too_fast) = [];
+dist(too_fast) = [];
+maxdist = 120;
 
 % compute tuning curves for position, head direction, speed, and theta phase
 [pos_curve] = compute_2d_tuning_curve(posx_c,posy_c,smooth_fr,n_pos_bins,0,boxSize);
 [hd_curve] = compute_1d_tuning_curve(direction,smooth_fr,n_dir_bins,0,2*pi);
 [speed_curve] = compute_1d_tuning_curve(speed,smooth_fr,n_speed_bins,0,50);
 [ego_curve] = compute_1d_tuning_curve(ego,smooth_fr,n_dir_bins,0,2*pi);
+[dist_curve] = compute_1d_tuning_curve(dist,smooth_fr,n_dist_bins,0,maxdist);

@@ -1,4 +1,4 @@
-function [testFit,trainFit,param_mean] = fit_model(A,dt,spiketrain,filter,modelType,numFolds)
+function [testFit,trainFit,param_mean] = fit_model(AA,dt,spiketrain,filter,MT,numFolds)
 
 %% Description
 % This code will section the data into 10 different portions. Each portion
@@ -13,7 +13,7 @@ function [testFit,trainFit,param_mean] = fit_model(A,dt,spiketrain,filter,modelT
 
 %% Initialize matrices and section the data for k-fold cross-validation
 
-[~,numCol] = size(A);
+[~,numCol] = size(AA);
 sections = numFolds*5;
 
 % divide the data up into 5*num_folds pieces
@@ -36,14 +36,14 @@ for k = 1:numFolds
     test_spikes = spiketrain(test_ind); %test spiking
     smooth_spikes_test = conv(test_spikes,filter,'same'); %returns vector same size as original
     smooth_fr_test = smooth_spikes_test./dt;
-    test_A = A(test_ind,:);
+    test_A = AA(test_ind,:);
     
     % training data
     train_ind = setdiff(1:numel(spiketrain),test_ind);
     train_spikes = spiketrain(train_ind);
     smooth_spikes_train = conv(train_spikes,filter,'same'); %returns vector same size as original
     smooth_fr_train = smooth_spikes_train./dt;
-    train_A = A(train_ind,:);
+    train_A = AA(train_ind,:);
     
     opts = optimset('Gradobj','on','Hessian','on','Display','off');
     
@@ -53,7 +53,7 @@ for k = 1:numFolds
     else
         init_param = param;
     end
-    [param] = fminunc(@(param) ln_poisson_model(param,data,modelType),init_param,opts);
+    [param] = fminunc(@(param) ln_poisson_model(param,data,MT), init_param,opts);
     
     %%%%%%%%%%%%% TEST DATA %%%%%%%%%%%%%%%%%%%%%%%
     % compute the firing rate
