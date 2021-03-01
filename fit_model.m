@@ -39,14 +39,18 @@ for k = 1:numFolds
     test_A = AA(test_ind,:);
     
     % training data
+    % setdiff(A,B): for vectors A and B, returns the values in A that 
+    % are not in B with no repetitions.
     train_ind = setdiff(1:numel(spiketrain),test_ind);
     train_spikes = spiketrain(train_ind);
     smooth_spikes_train = conv(train_spikes,filter,'same'); %returns vector same size as original
     smooth_fr_train = smooth_spikes_train./dt;
     train_A = AA(train_ind,:);
     
+    % create optimization 'options' structure
     opts = optimset('Gradobj','on','Hessian','on','Display','off');
     
+    % set some initial parameters and train the model
     data{1} = train_A; data{2} = train_spikes;
     if k == 1
         init_param = 1e-3*randn(numCol, 1);
@@ -75,6 +79,10 @@ for k = 1:numFolds
     log_llh_test_mean = nansum(meanFR_test-n.*log(meanFR_test)+log(factorial(n)))/sum(n);
     log_llh_test = (-log_llh_test_model + log_llh_test_mean);
     log_llh_test = log(2)*log_llh_test;
+    
+    % compute akaike information criterion; @joadded-20210215
+    % still need to add this to the output*
+    AIC = 2*(length(param))-2*log(log_llh_test);
     
     % compute MSE
     mse_test = nanmean((smooth_fr_hat_test-smooth_fr_test).^2);

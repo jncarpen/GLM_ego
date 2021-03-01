@@ -157,7 +157,6 @@ legend('Model performance','Selected model','Baseline')
 %% JO'S PLOTS
 % head direction
 figure; hold on; box off;
-title('head direction')
 plot(hd_vector,hd_curve,'k','linewidth',lw)
 plot(hd_vector,hd_response,'--k','linewidth',lw)
 axis([0 2*pi -inf inf]);
@@ -167,31 +166,10 @@ set(gca, 'fontSize', 20);
 
 % speed
 figure; hold on; box off;
-title('speed')
 plot(speed_vector,speed_curve,'k','linewidth',lw)
 plot(speed_vector,speed_response,'--k','linewidth',lw)
 l = legend({'data', 'model'}); l.Box = 'off';
 axis([0 50 -inf inf])
 set(gca, 'fontSize', 20);
-
-% egocentric bearing
-figure; hold on; box off;
-title('egocentric bearing')
-plot(hd_vector,ego_curve,'k','linewidth',lw)
-plot(ego_vector,ego_response,'--k','linewidth',lw)
-l = legend({'data', 'model'}); l.Box = 'off';
-axis([0 2*pi -inf inf])
-set(gca, 'fontSize', 20);
-
-% egocentric distance
-figure; hold on; box off;
-title('distance')
-plot(dist_vector,dist_curve,'k','linewidth',lw)
-plot(dist_vector,dist_response,'--k','linewidth',lw)
-axis([0 maxdist -inf inf])
-l = legend({'data', 'model'}); l.Box = 'off';
-set(gca, 'fontSize', 20);
-
-
-
+   
 

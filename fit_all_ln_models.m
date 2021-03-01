@@ -95,7 +95,7 @@ dt = post(3)-post(2); fr = spiketrain/dt;
 smooth_fr = conv(fr,filter,'same');
 
 % compute the number of folds we would like to do
-numFolds = 2;
+numFolds = 3;
 
 for n = 1:numModels
     fprintf('\t- Fitting model %d of %d\n', n, numModels);
