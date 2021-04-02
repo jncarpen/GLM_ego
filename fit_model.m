@@ -56,8 +56,10 @@ for k = 1:numFolds
         init_param = 1e-3*randn(numCol, 1);
     else
         init_param = param;
-    end
-    [param] = fminunc(@(param) ln_poisson_model(param,data,MT), init_param,opts);
+    end 
+    disp(init_param)
+    
+    [param] = fminunc(@(param) ln_poisson_model(param,data,MT), init_param, opts);
     
     %%%%%%%%%%%%% TEST DATA %%%%%%%%%%%%%%%%%%%%%%%
     % compute the firing rate

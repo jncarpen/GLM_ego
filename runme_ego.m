@@ -36,6 +36,7 @@ clear all; close all; clc
 
 % load dataset from animal 24116
 fprintf('(1/5) Loading data...')
+
 % load('C:\Users\17145\OneDrive - NTNU\Documents\github_local\GLM\GLM_sample_data\egodistcell.mat');
 
 % format variables:
@@ -59,7 +60,7 @@ spiketrain = histcounts(ST, linspace(post(1),post(end),numel(post)+1))';
 % (9) boxSize: length (in cm) of one side of the square box
 boxSize = nanmean([nanmax(posx_c) nanmax(posy_c)]);
 % (10) ref: reference point for bearing calculations (added by me)
-ref = [75, 75];
+% ref = [75, 75];
 
 
 %% fit the model

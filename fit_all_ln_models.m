@@ -7,12 +7,14 @@
 
 % initialize the number of bins that position, head direction, speed, and
 % theta phase will be divided into
+disp('fit_all_ln_models script opened...')
 n_pos_bins = 20;
 n_dir_bins = 18;
 n_ego_bins = 18;
 n_speed_bins = 10;
 n_dist_bins = 24; % approximatley 5 cm bins
 
+disp('computing state matrices...')
 % compute position matrix
 [posgrid, posVec] = pos_map([posx_c posy_c], n_pos_bins, boxSize);
 
@@ -28,6 +30,7 @@ n_dist_bins = 24; % approximatley 5 cm bins
 % compute distance matrix
 [distgrid,distVec,dist] = dist_map(posx_c,posy_c,ref,n_dist_bins);
 
+disp('speed thresholding...')
 % remove times when the animal ran > 50 cm/s (these data points may contain artifacts)
 too_fast = find(speed >= 50);
 posgrid(too_fast,:) = []; hdgrid(too_fast,:) = []; 
@@ -95,8 +98,8 @@ dt = post(3)-post(2); fr = spiketrain/dt;
 smooth_fr = conv(fr,filter,'same');
 
 % compute the number of folds we would like to do
-numFolds = 3;
-
+numFolds = 2;
+disp('starting to fit LN models...')
 for n = 1:numModels
     fprintf('\t- Fitting model %d of %d\n', n, numModels);
     [testFit{n},trainFit{n},param{n}] = fit_model(A{n},dt,spiketrain,filter,modelType{n},numFolds);
