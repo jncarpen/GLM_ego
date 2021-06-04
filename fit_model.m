@@ -1,4 +1,4 @@
-function [testFit,trainFit,param_mean] = fit_model(AA,dt,spiketrain,filter,MT,numFolds)
+function [testFit,trainFit,param_mean,paramMat] = fit_model(AA,dt,spiketrain,filter,MT,numFolds)
 
 %% Description
 % This code will section the data into 10 different portions. Each portion
@@ -57,7 +57,6 @@ for k = 1:numFolds
     else
         init_param = param;
     end 
-    disp(init_param)
     
     [param] = fminunc(@(param) ln_poisson_model(param,data,MT), init_param, opts);
     
