@@ -24,7 +24,7 @@ dirVec = 2*pi/nbins/2:2*pi/nbins:2*pi-2*pi/nbins/2;
 
 for i = 1:numel(posx)
     
-    % figure out the hd index
+    % figure out the egocentric bearing index
     [~, idx] = min(abs(ego(i)-dirVec));
     egogrid(i,idx) = 1;
   
